@@ -408,9 +408,9 @@ public class LoanCalculationService : ILoanCalculationService
     /// </summary>
     private LoanResponseDto CalculateEmployedQualification(LoanRequestDto request, LoanRequest savedRequest)
     {
-        // Step 1: DBR Cap (50%)
+        // Step 1: DBR Cap (60%)
         var netMonthlyIncome = request.MonthlySalaryIncome;
-        var dbrCap = netMonthlyIncome * 0.50m;
+        var dbrCap = netMonthlyIncome * 0.60m;
 
         // Step 2: Available EMI
         var availableEMI = dbrCap - request.ExistingLoanObligations;
@@ -485,7 +485,7 @@ public class LoanCalculationService : ILoanCalculationService
             DbrCap40Percent = Math.Round(dbrCap),
             AvailableEMI = roundedAvailableEMI,
             DbrUsedPercent = ((request.ExistingLoanObligations + roundedAvailableEMI) / (netMonthlyIncome == 0 ? 1 : netMonthlyIncome) * 100).ToString("0.0") + "%",
-            Assumptions = $"Employed flow: DBR=50%, AnnualRate={annualRate}%"
+            Assumptions = $"Employed flow: DBR=60%, AnnualRate={annualRate}%"
         };
     }
 
