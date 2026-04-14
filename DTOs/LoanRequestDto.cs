@@ -5,6 +5,7 @@ namespace MortgageLoanAPI.DTOs;
 /// </summary>
 public class LoanRequestDto
 {
+    public string? ProductType { get; set; }
     public decimal MonthlySalaryIncome { get; set; }
     public decimal MonthlyBusinessIncome { get; set; }
     public decimal MonthlyRentalPayments { get; set; }

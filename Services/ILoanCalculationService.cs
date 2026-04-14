@@ -22,6 +22,7 @@ public interface ILoanCalculationService
 /// </summary>
 public class LoanCalculationService : ILoanCalculationService
 {
+    private const decimal StandardMortgageAnnualRate = 14.02m;
     private readonly MortgageDbContext _dbContext;
     private readonly LoanConfigurationOptions _config;
     private readonly ILogger<LoanCalculationService> _logger;
@@ -439,8 +440,10 @@ public class LoanCalculationService : ILoanCalculationService
             };
         }
 
-        // Step 4: Interest Rate based on Tenor (years)
-        decimal annualRate = savedRequest.PreferredLoanTenorYears <= 20 ? 9.5m : 9.9m;
+        // Standard Mortgage uses a fixed employed rate; AHF remains tenor-based.
+        decimal annualRate = IsStandardMortgage(request)
+            ? StandardMortgageAnnualRate
+            : savedRequest.PreferredLoanTenorYears <= 20 ? 9.5m : 9.9m;
 
         // Step 5: Monthly Rate
         var monthlyRate = (annualRate / 100m) / 12m;
@@ -485,8 +488,13 @@ public class LoanCalculationService : ILoanCalculationService
             DbrCap40Percent = Math.Round(dbrCap),
             AvailableEMI = roundedAvailableEMI,
             DbrUsedPercent = ((request.ExistingLoanObligations + roundedAvailableEMI) / (netMonthlyIncome == 0 ? 1 : netMonthlyIncome) * 100).ToString("0.0") + "%",
-            Assumptions = $"Employed flow: DBR=60%, AnnualRate={annualRate}%"
+            Assumptions = $"Employed flow: ProductType={request.ProductType ?? "unspecified"}, DBR=60%, AnnualRate={annualRate}%"
         };
+    }
+
+    private static bool IsStandardMortgage(LoanRequestDto request)
+    {
+        return string.Equals(request.ProductType, "standard", StringComparison.OrdinalIgnoreCase);
     }
 
     private string BuildAssumptions(LoanRequestDto request, LoanResult result)
