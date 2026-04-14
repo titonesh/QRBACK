@@ -58,7 +58,7 @@ public class CallbackRequestService : ICallbackRequestService
 
             var callbackRequest = new CallbackRequest
             {
-                LoanResultId = request.LoanResultId,
+                LoanResultId = request.LoanResultId > 0 ? request.LoanResultId : null,
                 FullName = request.FullName,
                 PhoneNumber = request.PhoneNumber,
                 Email = request.Email,
@@ -109,9 +109,9 @@ public class CallbackRequestService : ICallbackRequestService
                         {
                             Id = newId,
                             LoanResultId = request.LoanResultId,
-                            FullName = request.FullName,
-                            PhoneNumber = request.PhoneNumber,
-                            Email = request.Email,
+                            FullName = request.FullName ?? string.Empty,
+                            PhoneNumber = request.PhoneNumber ?? string.Empty,
+                            Email = request.Email ?? string.Empty,
                             Message = request.Message,
                             ReferralNumber = request.ReferralNumber,
                             IsProcessed = false,

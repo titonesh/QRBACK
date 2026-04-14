@@ -5,7 +5,6 @@ namespace MortgageLoanAPI.DTOs;
 /// </summary>
 public class LoanRequestDto
 {
-    public string? ProductType { get; set; }
     public decimal MonthlySalaryIncome { get; set; }
     public decimal MonthlyBusinessIncome { get; set; }
     public decimal MonthlyRentalPayments { get; set; }
@@ -14,4 +13,8 @@ public class LoanRequestDto
     // Optional fields used by business calculation
     public decimal CreditCardLimit { get; set; } = 0m;
     public decimal OverdraftLimit { get; set; } = 0m;
+    // Product type: 'affordableHousing' or 'stdMortgage'
+    public string ProductType { get; set; } = "affordableHousing";
+    // Income source type: 'employed' or 'business' (only applicable for affordableHousing)
+    public string IncomeSourceType { get; set; } = "employed";
 }

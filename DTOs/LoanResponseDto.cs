@@ -24,4 +24,6 @@ public class LoanResponseDto
     public decimal? DbrCap40Percent { get; set; }
     public decimal? AvailableEMI { get; set; }
     public string? DbrUsedPercent { get; set; }
+    public bool? CappingApplied { get; set; }
+    public int? CalculatedLoanBeforeCap { get; set; }
 }
