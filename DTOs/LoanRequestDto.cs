@@ -17,4 +17,10 @@ public class LoanRequestDto
     public string ProductType { get; set; } = "affordableHousing";
     // Income source type: 'employed' or 'business' (only applicable for affordableHousing)
     public string IncomeSourceType { get; set; } = "employed";
+    // Additional customer details for better data collection
+    public string EmployerName { get; set; } = string.Empty;
+    public string NatureOfBusiness { get; set; } = string.Empty;
+    public string BusinessLocation { get; set; } = string.Empty;
+    // ID number for credit score integration (TransUnion scorecard fetching)
+    public string IdNumber { get; set; } = string.Empty;
 }
