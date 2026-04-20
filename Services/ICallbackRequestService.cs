@@ -210,7 +210,9 @@ ORDER BY CreatedAt DESC;";
     {
         try
         {
-            var query = _dbContext.CallbackRequests.AsQueryable();
+            var query = _dbContext.CallbackRequests
+                .Include(c => c.LoanResult)
+                .AsQueryable();
 
             // search across common fields
             if (!string.IsNullOrWhiteSpace(q))

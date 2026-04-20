@@ -224,7 +224,23 @@ public class LoanController : ControllerBase
                 email = c.Email,
                 message = c.Message,
                 loanInputsJson = c.LoanInputsJson,
-                loanResultJson = c.LoanResultJson,
+                loanResultJson = string.IsNullOrWhiteSpace(c.LoanResultJson)
+                    ? (c.LoanResult == null
+                        ? null
+                        : JsonSerializer.Serialize(new
+                        {
+                            loanResultId = c.LoanResult.Id,
+                            loanRequestId = c.LoanResult.LoanRequestId,
+                            adjustedIncome = c.LoanResult.AdjustedIncome,
+                            maximumLoanAmount = c.LoanResult.MaximumLoanAmount,
+                            estimatedMonthlyRepayment = c.LoanResult.EstimatedMonthlyRepayment,
+                            stressTestedRepayment = c.LoanResult.StressTestedRepayment,
+                            appliedInterestRate = c.LoanResult.AppliedInterestRate,
+                            appliedStressTestRate = c.LoanResult.AppliedStressTestRate,
+                            loanTenorMonths = c.LoanResult.LoanTenorMonths,
+                            createdAt = c.LoanResult.CreatedAt
+                        }))
+                    : c.LoanResultJson,
                 createdAt = c.CreatedAt,
                 isProcessed = c.IsProcessed
             });
